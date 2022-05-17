@@ -14,6 +14,11 @@ public class Principal {
 
 	public static void main(String[] args) {
 
+		cadastrarProdutos();
+		
+	}
+
+	private static void cadastrarProdutos() {
 		EntityManager em = EntityManagerFactory.getEntityManager();
 
 		CategoriaDao categoriaDao = new CategoriaDao(em);
@@ -61,7 +66,6 @@ public class Principal {
 				
 		em.getTransaction().commit();
 		em.close();
-		
 	}
 
 }
