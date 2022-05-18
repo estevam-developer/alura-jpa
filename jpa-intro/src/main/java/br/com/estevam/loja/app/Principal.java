@@ -1,6 +1,7 @@
 package br.com.estevam.loja.app;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 
@@ -14,11 +15,32 @@ public class Principal {
 
 	public static void main(String[] args) {
 
-		cadastrarProdutos();
+		Long produtoId = cadastrarProdutos();
+		
+		recuperarProdutos(produtoId);
 		
 	}
 
-	private static void cadastrarProdutos() {
+	private static void recuperarProdutos(Long produtoId) {
+		EntityManager em = EntityManagerFactory.getEntityManager();
+		
+		ProdutoDao produtoDao = new ProdutoDao(em);
+		
+		Produto produto = produtoDao.buscarPorId(produtoId);
+		System.out.println(produto.getNome());
+		
+		List<Produto> produtos;
+		
+		System.out.println(" -- BUSCAR TODOS -- ");
+		produtos = produtoDao.buscarTodos();
+		produtos.forEach(p -> System.out.println(p.getDescicao()));
+		
+		System.out.println(" -- BUSCAR POR NOME -- ");
+		produtos = produtoDao.buscarPorNome("Xia");
+		produtos.forEach(p -> System.out.println(p.getDescicao()));
+	}
+
+	private static Long cadastrarProdutos() {
 		EntityManager em = EntityManagerFactory.getEntityManager();
 
 		CategoriaDao categoriaDao = new CategoriaDao(em);
@@ -66,6 +88,8 @@ public class Principal {
 				
 		em.getTransaction().commit();
 		em.close();
+		
+		return celularXiaomi.getId();
 	}
 
 }
