@@ -12,8 +12,18 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+@NamedQuery(name = "Pedido.RelatorioVendas", query = "SELECT NEW br.com.estevam.loja.vo.RelatorioVendasVo(prod.nome, "
+														+ "SUM(item.quantidade) as quant, "
+														+ "MAX(ped.data)) "
+													+ "FROM Pedido ped "
+														+ "JOIN ped.itensPedido item "
+														+ "JOIN item.produto prod "
+													+ "GROUP BY prod.nome "
+													+ "ORDER BY quant DESC")
 
 @Entity
 @Table(name = "pedidos")

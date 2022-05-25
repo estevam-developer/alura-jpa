@@ -14,6 +14,7 @@ import br.com.estevam.loja.modelo.Categoria;
 import br.com.estevam.loja.modelo.Cliente;
 import br.com.estevam.loja.modelo.Pedido;
 import br.com.estevam.loja.modelo.Produto;
+import br.com.estevam.loja.vo.RelatorioVendasVo;
 
 public class Principal {
 
@@ -24,7 +25,7 @@ public class Principal {
 		consultas();
 		
 	}
-
+	
 	private static void consultas() {
 		EntityManager em = EntityManagerFactory.getEntityManager();
 		
@@ -47,6 +48,11 @@ public class Principal {
 		System.out.println(" -- CONSULTAS JPQL -- ");
 		
 		System.out.println("TOTAL VENDIDO = " + pedidoDao.valorTotalVendido());
+		
+		System.out.println("RELATÓRIO DE VENDAS... ");
+		
+		pedidoDao.relatorioVendas().forEach(System.out::println);
+		
 
 	}
 
@@ -98,6 +104,11 @@ public class Principal {
 
 		pedido_2.adicionarItem(2, celularXiaomi);
 		pedido_2.adicionarItem(1, notebookDell);
+
+		Pedido pedido_3 = new Pedido(cliente);
+
+		pedido_3.adicionarItem(2, celularXiaomi);
+		pedido_3.adicionarItem(1, notebookLenovo);
 		
 		em.getTransaction().begin();
 		
@@ -112,6 +123,7 @@ public class Principal {
 		clienteDao.cadastrar(cliente);
 		pedidoDao.cadastrar(pedido_1);
 		pedidoDao.cadastrar(pedido_2);
+		pedidoDao.cadastrar(pedido_3);
 		
 		em.getTransaction().commit();
 				
