@@ -1,6 +1,8 @@
 package br.com.estevam.loja.app;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -32,8 +34,14 @@ public class Principal {
 		ProdutoDao produtoDao = new ProdutoDao(em);
 		PedidoDao pedidoDao = new PedidoDao(em);
 		
-		Produto produto = produtoDao.buscarPorId(1L);
-		System.out.println(produto.getNome());
+		Produto produto;
+		
+		System.out.println(" -- BUSCAR POR ID -- ");
+		produto = produtoDao.buscarPorId(1L);
+		System.out.println(produto.getNome() + " - " + produto.getCategoria().getNome());
+		
+		produto = produtoDao.buscarProdutoComCategoria(3L);
+		System.out.println(produto.getNome() + " - " + produto.getCategoria().getNome());
 		
 		List<Produto> produtos;
 		
@@ -53,6 +61,10 @@ public class Principal {
 		
 		pedidoDao.relatorioVendas().forEach(System.out::println);
 		
+		System.out.println(" -- CONSULTAS CRITERIA -- ");
+		
+		produtoDao.buscarProdutoPorCriterios("N", null, LocalDate.now()).forEach(System.out::println);
+		produtoDao.buscarProdutoPorCriterios("N", new BigDecimal(5148.71).setScale(2,RoundingMode.HALF_EVEN), LocalDate.now()).forEach(System.out::println);
 
 	}
 

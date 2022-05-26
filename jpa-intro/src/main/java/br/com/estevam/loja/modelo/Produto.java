@@ -4,12 +4,15 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+@NamedQuery(name = "Produto.BuscarProdutoComCategoria", query = "SELECT prod FROM Produto AS prod JOIN FETCH prod.categoria WHERE prod.id = :Id")
 @Entity
 @Table(name = "produtos")
 public class Produto {
@@ -21,7 +24,7 @@ public class Produto {
 	private String descicao;
 	private BigDecimal preco;
 	private LocalDate dataCadastro = LocalDate.now();
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private Categoria categoria;
 
 	public Produto() {}
@@ -71,6 +74,11 @@ public class Produto {
 
 	public LocalDate getDataCadastro() {
 		return dataCadastro;
+	}
+
+	@Override
+	public String toString() {
+		return "Produto [nome=" + nome + ", preco=" + preco + ", dataCadastro=" + dataCadastro + "]";
 	}
 
 }
